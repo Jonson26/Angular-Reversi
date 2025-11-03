@@ -1,0 +1,22 @@
+.title{
+    border: 1px solid black;
+    background-color: beige;
+    text-align: center;
+    width: 368px;
+}
+
+.game{
+    display: flex;
+    margin-bottom: -2px;
+}
+
+.control{
+    border: 1px solid black;
+    background-color: beige;
+    width: fit-content;
+}
+
+.all{
+    border: 1px solid black;
+    width: fit-content;
+}

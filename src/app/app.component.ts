@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { BoardComponent } from "./board/board.component";
+import { ScoreDisplayComponent } from "./score-display/score-display.component";
+import { ControlPanelComponent } from "./control-panel/control-panel.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [BoardComponent, ScoreDisplayComponent, ControlPanelComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'reversi-in-browser-fixed';
+  title = 'reversi-in-browser';
 }

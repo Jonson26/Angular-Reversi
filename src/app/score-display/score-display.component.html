@@ -1,0 +1,18 @@
+<div class="mainDiv">
+    <h3><u>Score</u></h3>
+    <div class="scoreLine">
+        &nbsp;
+        <img src="../../assets/black.png" [class.current]="boardService.getTurn() === 2">
+        <span>: {{ blackScore }}</span>
+        &nbsp;
+    </div>
+    <div class="scoreLine">
+        &nbsp;
+        <img src="../../assets/white.png" [class.current]="boardService.getTurn() === 1">
+        <span>: {{ whiteScore }}</span>
+        &nbsp;
+    </div>
+    @if (boardService.win) {
+        <p style="text-align: center;">{{ boardService.winner }}</p>
+    }
+</div>

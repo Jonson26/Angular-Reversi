@@ -1,0 +1,9 @@
+<div class="board">
+    @for(row of boardService.getBoard(); track $index; let  y = $index){
+        <div class="row">
+            @for(cell of row; track $index; let  x = $index){
+                <app-piece [cell]="cell" [x]="x" [y]="y" />
+            }
+        </div>
+    }
+</div>
