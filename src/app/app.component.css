@@ -13,7 +13,8 @@
 .control{
     border: 1px solid black;
     background-color: beige;
-    width: fit-content;
+    font-size: 11pt;
+    width: 368px;
 }
 
 .all{

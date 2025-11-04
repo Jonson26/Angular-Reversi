@@ -14,8 +14,8 @@ export class PieceComponent {
   boardService = inject(BoardService);
 
   get imagePath(){
-    var assetName = "";
-    var assetPath = "../../../assets/";
+    let assetName = "";
+    const assetPath = "../../../assets/";
     switch(this.cell){
       case 0:
         assetName = "empty.png";

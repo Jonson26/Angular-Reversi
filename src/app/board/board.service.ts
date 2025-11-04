@@ -7,16 +7,7 @@ export class BoardService{
     // 1 - White
     // 2 - Black
     // 3 - Has Move
-    private board = [
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 2, 0, 0, 0],
-        [0, 0, 0, 2, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-    ];
+    board: number[][] = [];
 
     private turn = 2;
 
@@ -30,8 +21,25 @@ export class BoardService{
 
     winner = "";
 
+    constructor(){
+        this.initBoard();
+    }
+
+    initBoard(){
+        this.board = [
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 2, 0, 0, 0],
+            [0, 0, 0, 2, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+        ];
+    }
+
     private nextTurn(){
-        if(this.turn==2){
+        if(this.turn === 2){
             this.turn = 1;
         }else{
             this.turn = 2;
@@ -39,18 +47,18 @@ export class BoardService{
     }
 
     flipTiles(x: number, y: number, forReal: boolean){
-        var flips = 0;
-        var opposite = (this.turn == 1) ? 2 : 1;
-        for(var dx=-1; dx<2; dx++){
-            for(var dy=-1; dy<2; dy++){
-                var i = dx;
-                var j = dy;
-                while(this.inBounds(x+i, y+j) && this.board[y+j][x+i]===opposite){
+        let flips = 0;
+        const opposite = (this.turn === 1) ? 2 : 1;
+        for(let dx=-1; dx<2; dx++){
+            for(let dy=-1; dy<2; dy++){
+                let i = dx;
+                let j = dy;
+                while(this.inBounds(x+i, y+j) && this.board[y+j][x+i] === opposite){
                     i += dx;
                     j += dy;
                 }
-                if(this.inBounds(x+i, y+j) && this.board[y+j][x+i]===this.turn){
-                    while(!(i==0 && j==0)){
+                if(this.inBounds(x+i, y+j) && this.board[y+j][x+i] === this.turn){
+                    while(!(i===0 && j===0)){
                         i -= dx;
                         j -= dy;
                         flips++;
@@ -64,11 +72,11 @@ export class BoardService{
     }
 
     inBounds(x: number, y: number){
-        return (x>=0 && x<= 7) && (y>=0 && y<= 7);
+        return (x>=0 && x<=7) && (y>=0 && y<=7);
     }
 
     possibleMove(x: number, y: number){
-        return this.inBounds(x, y) && this.board[y][x]==0 && this.flipTiles(x, y, false)>0;
+        return this.inBounds(x, y) && this.board[y][x]===0 && this.flipTiles(x, y, false)>0;
     }
 
     private performMove(x: number, y: number){
@@ -102,58 +110,54 @@ export class BoardService{
     }
 
     makeMove(x: number, y: number){
-        var possibleMoves = 0;
-    
-        for(var tx=0; tx<8; tx++){
-            for(var ty=0; ty<8; ty++){
-                if(this.possibleMove(tx, ty)){
+        let possibleMoves = 0;
+        
+        this.board.forEach((row, y) => {
+            row.forEach((cell, x) => {
+                if (this.possibleMove(x, y)) {
                     possibleMoves++;
                 }
-            }
-        }
+            })
+        });
 
         if(possibleMoves>0){
+            let move: number[] = [-1, -1];
             if(this.turn === 1){
                 switch(this.whiteMode){
                     case "human":
-                        this.performMove(x, y);
+                        move = [x, y];
                         break;
                     case "dumb":
-                        var move = this.aiService.dumbStrategyMove();
-                        this.performMove(move[0], move[1]);
+                        move = this.aiService.dumbStrategyMove();
                         break;
                     case "smart":
-                        var move = this.aiService.smartStrategyMove();
-                        this.performMove(move[0], move[1]);
+                        move = this.aiService.smartStrategyMove();
                         break;
                     case "smart+":
-                        var move = this.aiService.smartPlusStrategyMove();
-                        this.performMove(move[0], move[1]);
+                        move = this.aiService.smartPlusStrategyMove();
                         break;
                 }
             }else if(this.turn === 2){
                 switch(this.blackMode){
                     case "human":
-                        this.performMove(x, y);
+                        move = [x, y];
                         break;
                     case "dumb":
-                        var move = this.aiService.dumbStrategyMove();
-                        this.performMove(move[0], move[1]);
+                        move = this.aiService.dumbStrategyMove();
                         break;
                     case "smart":
-                        var move = this.aiService.smartStrategyMove();
-                        this.performMove(move[0], move[1]);
+                        move = this.aiService.smartStrategyMove();
                         break;
                     case "smart+":
-                        var move = this.aiService.smartPlusStrategyMove();
-                        this.performMove(move[0], move[1]);
+                        move = this.aiService.smartPlusStrategyMove();
                         break;
                 }
             }
+            this.performMove(move[0], move[1]);
             this.secheduleAIMove();
         }else{
             this.win = true;
-            var score = this.getScore();
+            const score = this.getScore();
             if(score[0]>score[1]){
                 this.winner = "White wins!";
             }else if(score[0]<score[1]){
@@ -165,12 +169,12 @@ export class BoardService{
     }
 
     getBoard(){
-        var localBoard = JSON.parse(JSON.stringify(this.board));
-        for(var x=0; x<8; x++){
-            for(var y=0; y<8; y++){
-                if(this.possibleMove(x, y)) localBoard[y][x] = 3;
-            }
-        }
+        let localBoard = JSON.parse(JSON.stringify(this.board));
+        this.board.forEach((row, y) => {
+            row.forEach((cell, x) => {
+                if (this.possibleMove(x, y)) localBoard[y][x] = 3;
+            })
+        });
         return localBoard;
     }
 
@@ -179,9 +183,9 @@ export class BoardService{
     }
 
     getScore(){
-        var scores = [0, 0];
-        for(var x=0; x<8; x++){
-            for(var y=0; y<8; y++){
+        let scores = [0, 0];
+        this.board.forEach((row, y) => {
+            row.forEach((cell, x) => {
                 switch(this.board[y][x]){
                     case 1:
                         scores[0]++;
@@ -192,22 +196,13 @@ export class BoardService{
                     default:
                         break;
                 }
-            }
-        }
+            })
+        });
         return scores;
     }
 
     reset(){
-        this.board = [
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 1, 2, 0, 0, 0],
-            [0, 0, 0, 2, 1, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-        ];
+        this.initBoard();
         this.turn = 2;
         this.win = false;
         this.winner = "";
