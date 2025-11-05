@@ -2,15 +2,15 @@
 |
 Black:
 <select name="black-selector" id="black-selector" (change)="onBlackChange($event)">
-    <option value="human" selected="selected">Human</option>
-    <option value="dumb">Dumb AI</option>
-    <option value="smart">Smart AI</option>
-    <option value="smart+">Smart+ AI</option>
+    <option value="{{ aiLevel.human }}" selected="selected">Human</option>
+    <option value="{{ aiLevel.dumb }}">Dumb AI</option>
+    <option value="{{ aiLevel.smart }}">Smart AI</option>
+    <option value="{{ aiLevel.smart_plus }}">Smart+ AI</option>
 </select>
 White:
 <select name="white-selector" id="white-selector" (change)="onWhiteChange($event)">
-    <option value="human">Human</option>
-    <option value="dumb">Dumb AI</option>
-    <option value="smart">Smart AI</option>
-    <option value="smart+" selected="selected">Smart+ AI</option>
+    <option value="{{ aiLevel.human }}">Human</option>
+    <option value="{{ aiLevel.dumb }}">Dumb AI</option>
+    <option value="{{ aiLevel.smart }}">Smart AI</option>
+    <option value="{{ aiLevel.smart_plus }}" selected="selected">Smart+ AI</option>
 </select>

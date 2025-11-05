@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { BoardService } from '../board/board.service';
+import { AILevel } from '../board/game.model';
 
 @Component({
   selector: 'app-control-panel',
@@ -9,6 +10,7 @@ import { BoardService } from '../board/board.service';
 })
 export class ControlPanelComponent {
   boardService = inject(BoardService);
+  aiLevel = AILevel;
   
   reset(){
     this.boardService.reset();
@@ -16,11 +18,11 @@ export class ControlPanelComponent {
 
   onBlackChange(event: Event){
     console.log((event.target as HTMLInputElement).value);
-    this.boardService.blackMode = (event.target as HTMLInputElement).value;
+    this.boardService.blackMode = (event.target as HTMLInputElement).value as AILevel;
   }
 
   onWhiteChange(event: Event){
     console.log((event.target as HTMLInputElement).value);
-    this.boardService.whiteMode = (event.target as HTMLInputElement).value;
+    this.boardService.whiteMode = (event.target as HTMLInputElement).value as AILevel;
   }
 }

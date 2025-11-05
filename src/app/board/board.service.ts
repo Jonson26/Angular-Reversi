@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AIService } from "./ai.service";
+import { AILevel } from "./game.model";
 
 @Injectable({ providedIn: 'root' })
 export class BoardService{
@@ -13,9 +14,9 @@ export class BoardService{
 
     private aiService = new AIService(this);
 
-    blackMode = "human";
+    blackMode = AILevel.human;
 
-    whiteMode = "smart+";
+    whiteMode = AILevel.smart_plus;
 
     win = false;
 
@@ -89,7 +90,7 @@ export class BoardService{
 
     private secheduleAIMove(){
         if(this.turn===1){
-            if(this.whiteMode!="human"){
+            if(this.whiteMode!==AILevel.human){
                 setTimeout(() => 
                     {
                         this.makeMove(-1, -1);
@@ -98,7 +99,7 @@ export class BoardService{
                 );
             }
         }else{
-            if(this.blackMode!="human"){
+            if(this.blackMode!==AILevel.human){
                 setTimeout(() => 
                     {
                         this.makeMove(-1, -1);
@@ -124,31 +125,31 @@ export class BoardService{
             let move: number[] = [-1, -1];
             if(this.turn === 1){
                 switch(this.whiteMode){
-                    case "human":
+                    case AILevel.human:
                         move = [x, y];
                         break;
-                    case "dumb":
+                    case AILevel.dumb:
                         move = this.aiService.dumbStrategyMove();
                         break;
-                    case "smart":
+                    case AILevel.smart:
                         move = this.aiService.smartStrategyMove();
                         break;
-                    case "smart+":
+                    case AILevel.smart_plus:
                         move = this.aiService.smartPlusStrategyMove();
                         break;
                 }
             }else if(this.turn === 2){
                 switch(this.blackMode){
-                    case "human":
+                    case AILevel.human:
                         move = [x, y];
                         break;
-                    case "dumb":
+                    case AILevel.dumb:
                         move = this.aiService.dumbStrategyMove();
                         break;
-                    case "smart":
+                    case AILevel.smart:
                         move = this.aiService.smartStrategyMove();
                         break;
-                    case "smart+":
+                    case AILevel.smart_plus:
                         move = this.aiService.smartPlusStrategyMove();
                         break;
                 }
